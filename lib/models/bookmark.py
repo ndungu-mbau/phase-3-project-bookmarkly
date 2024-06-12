@@ -99,3 +99,50 @@ class Bookmark:
 
         cursor.execute(sql, (self.id,))
         conn.commit()
+
+    @classmethod
+    def fetch_by_id(cls, id):
+        sql = """
+            SELECT * FROM bookmark
+            WHERE id = ?
+        """
+
+        cursor.execute(sql, (id,))
+        result = cursor.fetchone()
+
+        return cls(*result)
+
+    @classmethod
+    def fetch_all(cls):
+        sql = """
+            SELECT * FROM bookmark
+        """
+
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        return [cls(*result) for result in results]
+
+    @classmethod
+    def fetch_by_user(cls, user):
+        sql = """
+            SELECT * FROM bookmark
+            WHERE user = ?
+        """
+
+        cursor.execute(sql, (user,))
+        results = cursor.fetchall()
+
+        return [cls(*result) for result in results]
+
+    @classmethod
+    def fetch_by_category(cls, category):
+        sql = """
+            SELECT * FROM bookmark
+            WHERE category = ?
+        """
+
+        cursor.execute(sql, (category,))
+        results = cursor.fetchall()
+
+        return [cls(*result) for result in results]

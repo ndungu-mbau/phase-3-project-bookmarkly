@@ -1,6 +1,6 @@
-from category import Category
-from bookmark import Bookmark
-from user import User
+from .category import Category
+from .bookmark import Bookmark
+from .user import User
 
 Category.drop_table()
 Category.create_table()

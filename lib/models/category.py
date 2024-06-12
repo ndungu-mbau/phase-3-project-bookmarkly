@@ -93,3 +93,38 @@ class Category:
 
         cursor.execute(sql, (self.id,))
         conn.commit()
+
+    @classmethod
+    def fetch_all(cls):
+        sql = """
+            SELECT * FROM categories
+        """
+
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        return [cls(*result) for result in results]
+
+    @classmethod
+    def fetch_by_id(cls, id):
+        sql = """
+            SELECT * FROM categories
+            WHERE id = ?
+        """
+
+        cursor.execute(sql, (id,))
+        result = cursor.fetchone()
+
+        return cls(*result)
+
+    @classmethod
+    def fetch_by_title(cls, title):
+        sql = """
+            SELECT * FROM categories
+            WHERE title = ?
+        """
+
+        cursor.execute(sql, (title,))
+        result = cursor.fetchone()
+
+        return cls(*result)

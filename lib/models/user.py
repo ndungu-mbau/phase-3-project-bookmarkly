@@ -93,3 +93,27 @@ class User:
 
         cursor.execute(sql, (self.id,))
         conn.commit()
+
+    @classmethod
+    def fetch_by_id(cls, id):
+        sql = """
+            SELECT * FROM user
+            WHERE id = ?
+        """
+
+        cursor.execute(sql, (id,))
+        result = cursor.fetchone()
+
+        return cls(*result)
+
+    @classmethod
+    def fetch_by_email(cls, email):
+        sql = """
+            SELECT * FROM user
+            WHERE email = ?
+        """
+
+        cursor.execute(sql, (email,))
+        result = cursor.fetchone()
+
+        return cls(*result)
