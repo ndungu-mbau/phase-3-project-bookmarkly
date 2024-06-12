@@ -61,9 +61,9 @@ class Bookmark:
     # create a class method that automatically creates the instance and saves it in the db
     # class method because the object doesnt yet exist when we call this method
     @classmethod
-    def create(cls, title, category):
+    def create(cls, title, url, user_id, category_id):
         # create a category instance
-        category = cls(title, category)
+        category = cls(title, url, user_id, category_id)
 
         # save the instance
         category.save()
