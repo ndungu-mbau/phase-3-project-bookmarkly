@@ -3,7 +3,7 @@ from db import conn, cursor
 
 class Category:
 
-    def __init__(self, title, description):
+    def __init__(self, id, title, description):
         self.id = id
         self.title = title
         self.description = description
@@ -59,7 +59,7 @@ class Category:
     @classmethod
     def create(cls, title, category):
         # create a category instance
-        category = cls(title, category)
+        category = cls(cursor.lastrowid, title, category)
 
         # save the instance
         category.save()
@@ -95,7 +95,7 @@ class Category:
         conn.commit()
 
     @classmethod
-    def fetch_all(cls):
+    def find_all(cls):
         sql = """
             SELECT * FROM categories
         """
@@ -106,7 +106,7 @@ class Category:
         return [cls(*result) for result in results]
 
     @classmethod
-    def fetch_by_id(cls, id):
+    def find_by_id(cls, id):
         sql = """
             SELECT * FROM categories
             WHERE id = ?
@@ -118,7 +118,7 @@ class Category:
         return cls(*result)
 
     @classmethod
-    def fetch_by_title(cls, title):
+    def find_by_title(cls, title):
         sql = """
             SELECT * FROM categories
             WHERE title = ?

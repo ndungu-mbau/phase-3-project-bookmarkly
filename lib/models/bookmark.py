@@ -3,7 +3,7 @@ from db import conn, cursor
 
 class Bookmark:
 
-    def __init__(self, title, url, user, category):
+    def __init__(self, id, title, url, user, category):
         self.id = id
         self.title = title
         self.url = url
@@ -63,7 +63,7 @@ class Bookmark:
     @classmethod
     def create(cls, title, url, user_id, category_id):
         # create a category instance
-        category = cls(title, url, user_id, category_id)
+        category = cls(cursor.lastrowid, title, url, user_id, category_id)
 
         # save the instance
         category.save()
@@ -101,7 +101,7 @@ class Bookmark:
         conn.commit()
 
     @classmethod
-    def fetch_by_id(cls, id):
+    def find_by_id(cls, id):
         sql = """
             SELECT * FROM bookmark
             WHERE id = ?
@@ -113,7 +113,19 @@ class Bookmark:
         return cls(*result)
 
     @classmethod
-    def fetch_all(cls):
+    def find_by_url(cls, url):
+        sql = """
+            SELECT * FROM bookmark
+            WHERE url = ?
+        """
+
+        cursor.execute(sql, (url,))
+        result = cursor.fetchone()
+
+        return cls(*result)
+
+    @classmethod
+    def find_all(cls):
         sql = """
             SELECT * FROM bookmark
         """
@@ -124,7 +136,7 @@ class Bookmark:
         return [cls(*result) for result in results]
 
     @classmethod
-    def fetch_by_user(cls, user):
+    def find_by_user(cls, user):
         sql = """
             SELECT * FROM bookmark
             WHERE user = ?
@@ -136,7 +148,7 @@ class Bookmark:
         return [cls(*result) for result in results]
 
     @classmethod
-    def fetch_by_category(cls, category):
+    def find_by_category(cls, category):
         sql = """
             SELECT * FROM bookmark
             WHERE category = ?

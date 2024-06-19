@@ -3,7 +3,7 @@ from db import conn, cursor
 
 class User:
 
-    def __init__(self, email, username):
+    def __init__(self, id, email, username):
         self.id = id
         self.email = email
         self.username = username
@@ -57,15 +57,15 @@ class User:
     # create a class method that automatically creates the instance and saves it in the db
     # class method because the object doesnt yet exist when we call this method
     @classmethod
-    def create(cls, email, category):
+    def create(cls, email, username):
         # create a category instance
-        category = cls(email, category)
+        user = cls(cursor.lastrowid, email, username)
 
         # save the instance
-        category.save()
+        user.save()
 
         # return the instantiated object
-        return category
+        return user
 
     # method to update an existing record that corresponds to the object instance
     def update(self):
@@ -95,7 +95,18 @@ class User:
         conn.commit()
 
     @classmethod
-    def fetch_by_id(cls, id):
+    def find_all(cls):
+        sql = """
+            SELECT * FROM user
+        """
+
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        return [cls(*result) for result in results]
+
+    @classmethod
+    def find_by_id(cls, id):
         sql = """
             SELECT * FROM user
             WHERE id = ?
@@ -107,13 +118,16 @@ class User:
         return cls(*result)
 
     @classmethod
-    def fetch_by_email(cls, email):
-        sql = """
-            SELECT * FROM user
-            WHERE email = ?
-        """
+    def find_by_email(cls, email):
+        try:
+            sql = """
+                SELECT * FROM user
+                WHERE email = ?
+            """
 
-        cursor.execute(sql, (email,))
-        result = cursor.fetchone()
+            cursor.execute(sql, (email,))
+            result = cursor.fetchone()
 
-        return cls(*result)
+            return cls(*result)
+        except Exception:
+            print(f"User does not exist with email: {email}")
