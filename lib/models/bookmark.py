@@ -17,7 +17,7 @@ class Bookmark:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE bookmark (
+            CREATE TABLE IF NOT EXISTS bookmark (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             url TEXT NOT NULL,

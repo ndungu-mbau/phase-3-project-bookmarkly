@@ -15,7 +15,7 @@ class Category:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE categories (
+            CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             description NOT NULL

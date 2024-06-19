@@ -15,7 +15,7 @@ class User:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE user (
+            CREATE TABLE IF NOT EXISTS user (
             id INTEGER PRIMARY KEY,
             email TEXT NOT NULL,
             username NOT NULL
